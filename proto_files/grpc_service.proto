@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+// Remote procedures list
+service serviceTest {
+
+	rpc floatReturn (empty) returns
+		(empty);
+
+	rpc doubleReturn (doubleSend) returns
+		(doubleRecv);
+
+	rpc int32Return (int32Send) returns
+		(int32Recv);
+
+	rpc int32MultiToOneReturn (int32MultiSend) returns
+		(int32Recv);
+
+	rpc stringreturn (stringSend) returns
+		(stringRecv);
+}
+
+// Message structures sections
+message doubleSend {
+	double double_data_send = 1;
+}
+
+message doubleRecv {
+	double double_data_recv = 1;
+}
+
+message int32Send {
+	int32 int32_data_send = 1;
+}
+
+message int32MultiSend {
+    int32 int32_d_0 = 1;
+    int32 int32_d_1 = 2;
+    int32 int32_d_2 = 3;
+    int32 int32_d_3 = 4;
+    int32 int32_d_4 = 5;
+    int32 int32_d_5 = 6;
+    int32 int32_d_6 = 7;
+    int32 int32_d_7 = 8;
+}
+
+message int32Recv {
+	int32 int32_data_recv = 1;
+}
+
+message stringSend {
+	string string_data_send = 1;
+}
+
+message stringRecv {
+	string string_data_recv = 1;
+}
+
+message empty {
+}
