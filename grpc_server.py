@@ -32,6 +32,11 @@ class serviceTest(grpc_service_pb2_grpc.serviceTest):
                 string_data=request.string_data)
         return return_data
 
+    def customObjectReturn(self, request, context):
+        return_data = grpc_service_pb2.customObject(
+                custom_data=request.custom_data)
+        return return_data
+
 
 def server_start():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
