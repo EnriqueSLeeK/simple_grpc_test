@@ -72,11 +72,12 @@ def main():
     os.makedirs('../log', exist_ok=True)
 
     with open("../log/time_taken_rpyc.csv", "w") as csv:
-        csv.write(f"void,{to_str_time(time_taken['empty'])}\n")
-        csv.write(f"long,{to_str_time(time_taken['int32'])}\n")
-        for i in range(10):
-            csv.write(f"string_{i},{to_str_time(time_taken[f'string_{i}'])}\n")
-        csv.write(f"double,{to_str_time(time_taken['double'])}\n")
+        csv.write(f"{to_str_time(time_taken['empty'])}\n")
+        csv.write(f"{to_str_time(time_taken['int32'])}\n")
+        csv.write(f"{to_str_time(time_taken['double'])}\n")
+        csv.write(f"{to_str_time(time_taken['multiInt32'])}\n")
+        for i in range(i):
+            csv.write(f"{to_str_time(time_taken[f'string_{i}'])}\n")
 
 
 if __name__ == "__main__":
