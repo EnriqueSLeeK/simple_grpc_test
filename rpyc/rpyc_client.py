@@ -2,6 +2,7 @@
 import os
 import time
 import rpyc
+import classes as c
 
 
 time_taken = {
@@ -21,12 +22,15 @@ time_taken = {
         'multiInt32': [],
         }
 
-conn = rpyc.connect('localhost', 18811)
+conn = rpyc.connect('localhost', 18811,
+                    config={"allow_public_attrs": True})
 
 
 def test(remote_method, data, iterations=2000):
     time_measure = []
     for i in range(iterations):
+        if (i % 500) == 0:
+            print(i)
         start = time.time()
         remote_method(data)
         end = time.time()
@@ -40,11 +44,29 @@ def time_test(type_tested, remote_method, data):
         )
 
 
+def empty():
+    return c.empty()
+
+
 def string():
     data = []
     for i in range(10):
-        data.append('aaaaa' * pow(4, i))
+        string = 'aaaaa' * pow(4, i)
+        data.append(c.genericObj(string))
     return data
+
+
+def int32():
+    return c.genericObj(123)
+
+
+def double():
+    return c.genericObj(111111.1111111)
+
+
+def multiInt():
+    return c.multiObj(1, 2, 3, 4,
+                      5, 6, 7, 8)
 
 
 def to_str_time(time_list):
@@ -52,23 +74,37 @@ def to_str_time(time_list):
 
 
 def main():
-    time_test('empty', conn.root.valueReturn, None)
+    print('empty test')
+    time_test('empty',
+              conn.root.valueReturn,
+              empty())
+
+    print('double test')
+    time_test('double',
+              conn.root.valueReturn,
+              double())
+
+    print('int32 test')
+    time_test('int32',
+              conn.root.valueReturn,
+              int32())
+
+    print(multiInt().data_0)
+    print('multiInt32 test')
+    time_test('multiInt32',
+              conn.root.multiToOneReturn,
+              multiInt())
 
     data_string = string()
     i = 0
     for data in data_string:
-        time_test(f'string_{i}', conn.root.valueReturn, data)
+        print(f'string_{i} test')
+        time_test(f'string_{i}',
+                  conn.root.valueReturn,
+                  data)
         i += 1
 
-    time_test('multiInt32', conn.root.multiToOneReturn, [1, 2,
-                                                         3, 4,
-                                                         5, 6,
-                                                         7, 8])
-
-    time_test('double', conn.root.valueReturn, 111111.1111111)
-
-    time_test('int32', conn.root.valueReturn, 123)
-
+    print('Writing to log')
     os.makedirs('../log', exist_ok=True)
 
     with open("../log/time_taken_rpyc.csv", "w") as csv:

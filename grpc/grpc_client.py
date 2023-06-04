@@ -31,6 +31,8 @@ def print_status(status):
 def test(remote_method, data, iterations=2000):
     time_measure = []
     for i in range(iterations):
+        if (i % 500) == 0:
+            print(i)
         start = time.time()
         remote_method(data)
         end = time.time()
@@ -83,21 +85,34 @@ def main():
     channel = grpc.insecure_channel('[::]:50051')
     stub = grpc_service_pb2_grpc.serviceTestStub(channel)
 
-    time_test("empty", stub.emptyReturn, empty())
+    print('empty test')
+    time_test("empty",
+              stub.emptyReturn,
+              empty())
 
-    time_test("int32", stub.int32Return, int32())
+    print('double test')
+    time_test("int32",
+              stub.int32Return,
+              int32())
+
+    print('int32 test')
+    time_test("double",
+              stub.doubleReturn,
+              double())
+
+    print('multiInt32 test')
+    time_test("multiInt32",
+              stub.int32MultiToOneReturn,
+              multiInt())
 
     data_list = string()
     i = 0
     for data in data_list:
-        time_test(f"string_{i}", stub.stringReturn, data)
+        print(f'string_{i} test')
+        time_test(f"string_{i}",
+                  stub.stringReturn,
+                  data)
         i += 1
-
-    time_test("double", stub.doubleReturn, double())
-
-    time_test("multiInt32",
-              stub.int32MultiToOneReturn,
-              multiInt())
 
     os.makedirs('../log', exist_ok=True)
 
