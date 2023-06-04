@@ -60,10 +60,10 @@ def main():
         time_test(f'string_{i}', conn.root.valueReturn, data)
         i += 1
 
-    time_test('multiInt32', conn.root.valueReturn, [1, 2,
-                                                    3, 4,
-                                                    5, 6,
-                                                    7, 8])
+    time_test('multiInt32', conn.root.multiToOneReturn, [1, 2,
+                                                         3, 4,
+                                                         5, 6,
+                                                         7, 8])
 
     time_test('double', conn.root.valueReturn, 111111.1111111)
 
