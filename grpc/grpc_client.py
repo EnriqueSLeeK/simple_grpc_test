@@ -5,6 +5,8 @@ import grpc
 import proto_files.grpc_service_pb2 as grpc_service_pb2
 import proto_files.grpc_service_pb2_grpc as grpc_service_pb2_grpc
 
+channel = grpc.insecure_channel('[::]:50051')
+stub = grpc_service_pb2_grpc.serviceTestStub(channel)
 
 time_taken = {
         'empty': [],
@@ -40,10 +42,10 @@ def test(remote_method, data, iterations=2000):
     return time_measure
 
 
-def time_test(type_tested, remote_method, data):
+def time_test(type_tested, remote_method, data, iteration):
     time_taken[type_tested].extend(
-        test(remote_method, data)
-        )
+            test(remote_method, data, iteration)
+            )
 
 
 def empty():
@@ -81,29 +83,39 @@ def to_str_time(time_list):
     return ",".join(str(time) for time in time_list)
 
 
+def check_and_parse(number):
+    if number.isdigit() and number[0] not in ('+', '-'):
+        return int(number)
+    print('Bad iteration input defaulting number of iteration')
+    return 2000
+
+
 def main():
-    channel = grpc.insecure_channel('[::]:50051')
-    stub = grpc_service_pb2_grpc.serviceTestStub(channel)
+    iteration = check_and_parse(input('Numero de iteracoes: '))
 
     print('empty test')
     time_test("empty",
               stub.emptyReturn,
-              empty())
+              empty(),
+              iteration)
 
     print('double test')
     time_test("int32",
               stub.int32Return,
-              int32())
+              int32(),
+              iteration)
 
     print('int32 test')
     time_test("double",
               stub.doubleReturn,
-              double())
+              double(),
+              iteration)
 
     print('multiInt32 test')
     time_test("multiInt32",
               stub.int32MultiToOneReturn,
-              multiInt())
+              multiInt(),
+              iteration)
 
     data_list = string()
     i = 0
@@ -111,18 +123,18 @@ def main():
         print(f'string_{i} test')
         time_test(f"string_{i}",
                   stub.stringReturn,
-                  data)
+                  data,
+                  iteration)
         i += 1
 
-    os.makedirs('../log', exist_ok=True)
-
-    with open("../log/time_taken_grpc.csv", "w") as csv:
+    os.makedirs('../grpc_log', exist_ok=True)
+    with open(f"../grpc_log/time_taken_grpc_{iteration}.csv", "w") as csv:
         csv.write(f"{to_str_time(time_taken['empty'])}\n")
         csv.write(f"{to_str_time(time_taken['int32'])}\n")
         csv.write(f"{to_str_time(time_taken['double'])}\n")
         csv.write(f"{to_str_time(time_taken['multiInt32'])}\n")
-        for i in range(i):
-            csv.write(f"{to_str_time(time_taken[f'string_{i}'])}\n")
+        for k in range(i):
+            csv.write(f"{to_str_time(time_taken[f'string_{k}'])}\n")
 
 
 if __name__ == "__main__":
