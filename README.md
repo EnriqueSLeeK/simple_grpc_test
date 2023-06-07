@@ -22,7 +22,7 @@ Note: You may will need two instances of your terminal since the server will blo
 ```
 $ python -m venv venv
 ```
-This should create an directory named "venv"
+This should create a directory named "venv"
 3. Finally activated
 ```
 $ source venv/bin/activate
