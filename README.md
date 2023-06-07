@@ -13,7 +13,7 @@ Note: I recommend using a python virtual env just to keep the local installation
 
 2. Then enter the directory name grpc or rpyc with `cd`
 3. Execute the server first then the client
-Note: You may will need two instances of your terminal since the server will block one when you run it or you can run it in the background with the operator `&`
+Note: You may will need two instances of your terminal since the server will block one when you run it or you can run it in the background with the operator `&` to run it inside the same terminal
 
 
 ##### (Optional) Installing and creating a python virtual env
