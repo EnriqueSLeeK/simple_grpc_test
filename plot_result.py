@@ -67,8 +67,8 @@ def plotting(file, file_2, plot_method, title_list):
 
 
 def main():
-    plotting(file_name('grpc_log', 'time_taken_grpc_2000.csv'),
-             file_name('rpyc_log', 'time_taken_rpyc_2000.csv'),
+    plotting(file_name('grpc_log', 'time_taken_grpc_500_1.csv'),
+             file_name('rpyc_log', 'time_taken_rpyc_500_1.csv'),
              plot_jux_graph,
              titles)
     """
