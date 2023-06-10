@@ -17,6 +17,9 @@ service serviceTest {
 
     rpc int32Return (int32Data) returns
         (int32Data);
+
+    rpc shutdown (Empty) returns
+        (Empty);
 }
 
 // Message structures sections

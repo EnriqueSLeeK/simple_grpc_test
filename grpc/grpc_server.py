@@ -37,16 +37,14 @@ class serviceTest(grpc_service_pb2_grpc.serviceTest):
                 custom_data=request.custom_data)
         return return_data
 
-
-def server_start():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    grpc_service_pb2_grpc.add_serviceTestServicer_to_server(
-        serviceTest(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    server.wait_for_termination()
+    def shutdown(self, request, context):
+        server.stop(0)
+        return request
 
 
-if __name__ == "__main__":
-    print("Server started")
-    server_start()
+server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+grpc_service_pb2_grpc.add_serviceTestServicer_to_server(
+    serviceTest(), server)
+server.add_insecure_port('[::]:50051')
+server.start()
+server.wait_for_termination()

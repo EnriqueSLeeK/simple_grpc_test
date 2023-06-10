@@ -5,3 +5,5 @@ result
 grpc_log
 graph
 rpyc_log
+local_test
+remote_test

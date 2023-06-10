@@ -1,9 +1,10 @@
 
-import os
 import time
 import grpc
+import file_operation.operation.file_op as fop
 import proto_files.grpc_service_pb2 as grpc_service_pb2
 import proto_files.grpc_service_pb2_grpc as grpc_service_pb2_grpc
+
 
 channel = grpc.insecure_channel('[::]:50051')
 stub = grpc_service_pb2_grpc.serviceTestStub(channel)
@@ -79,15 +80,16 @@ def multiInt():
                                            int32_d_7=8)
 
 
-def to_str_time(time_list):
-    return ",".join(str(time) for time in time_list)
-
-
 def check_and_parse(number):
     if number.isdigit() and number[0] not in ('+', '-'):
         return int(number)
     print('Bad iteration input defaulting number of iteration')
     return 2000
+
+
+def empty_content_from_associate_value():
+    for i in time_taken:
+        time_taken[i] = []
 
 
 def main():
@@ -127,14 +129,13 @@ def main():
                   iteration)
         i += 1
 
-    os.makedirs('../grpc_log', exist_ok=True)
-    with open(f"../grpc_log/time_taken_grpc_{iteration}.csv", "w") as csv:
-        csv.write(f"{to_str_time(time_taken['empty'])}\n")
-        csv.write(f"{to_str_time(time_taken['int32'])}\n")
-        csv.write(f"{to_str_time(time_taken['double'])}\n")
-        csv.write(f"{to_str_time(time_taken['multiInt32'])}\n")
-        for k in range(i):
-            csv.write(f"{to_str_time(time_taken[f'string_{k}'])}\n")
+    fop.write_files('../grpc_log',
+                    f'time_taken_grpc__{iteration}',
+                    iteration,
+                    time_taken,
+                    i)
+
+    empty_content_from_associate_value()
 
 
 if __name__ == "__main__":

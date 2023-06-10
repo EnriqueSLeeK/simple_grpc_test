@@ -40,6 +40,11 @@ class serviceTestStub(object):
                 request_serializer=grpc__service__pb2.int32Data.SerializeToString,
                 response_deserializer=grpc__service__pb2.int32Data.FromString,
                 )
+        self.shutdown = channel.unary_unary(
+                '/serviceTest/shutdown',
+                request_serializer=grpc__service__pb2.Empty.SerializeToString,
+                response_deserializer=grpc__service__pb2.Empty.FromString,
+                )
 
 
 class serviceTestServicer(object):
@@ -76,6 +81,12 @@ class serviceTestServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def shutdown(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_serviceTestServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -103,6 +114,11 @@ def add_serviceTestServicer_to_server(servicer, server):
                     servicer.int32Return,
                     request_deserializer=grpc__service__pb2.int32Data.FromString,
                     response_serializer=grpc__service__pb2.int32Data.SerializeToString,
+            ),
+            'shutdown': grpc.unary_unary_rpc_method_handler(
+                    servicer.shutdown,
+                    request_deserializer=grpc__service__pb2.Empty.FromString,
+                    response_serializer=grpc__service__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -197,5 +213,22 @@ class serviceTest(object):
         return grpc.experimental.unary_unary(request, target, '/serviceTest/int32Return',
             grpc__service__pb2.int32Data.SerializeToString,
             grpc__service__pb2.int32Data.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def shutdown(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/serviceTest/shutdown',
+            grpc__service__pb2.Empty.SerializeToString,
+            grpc__service__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

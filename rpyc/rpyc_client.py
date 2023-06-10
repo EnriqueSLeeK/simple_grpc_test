@@ -1,5 +1,5 @@
 
-import os
+import file_operation.operation.file_op as fop
 import time
 import rpyc
 import classes as c
@@ -40,7 +40,7 @@ def test(remote_method, data, iterations=2000):
 
 def time_test(type_tested, remote_method, data, iteration):
     time_taken[type_tested].extend(
-            test(remote_method, data)
+            test(remote_method, data, iteration)
             )
 
 
@@ -74,6 +74,7 @@ def to_str_time(time_list):
 
 
 def check_and_parse(number):
+    print(number)
     if number.isdigit() and number[0] not in ('+', '-'):
         return int(number)
     print('Bad iteration input defaulting number of iteration')
@@ -117,16 +118,11 @@ def main():
                   iteration)
         i += 1
 
-    print('Writing to log')
-    os.makedirs('../rpyc_log', exist_ok=True)
-
-    with open(f"../rpyc_log/time_taken_rpyc_{iteration}.csv", "w") as csv:
-        csv.write(f"{to_str_time(time_taken['empty'])}\n")
-        csv.write(f"{to_str_time(time_taken['int32'])}\n")
-        csv.write(f"{to_str_time(time_taken['double'])}\n")
-        csv.write(f"{to_str_time(time_taken['multiInt32'])}\n")
-        for k in range(i):
-            csv.write(f"{to_str_time(time_taken[f'string_{k}'])}\n")
+    fop.write_files('../rpyc_log',
+                    f'time_taken_rpyc__{iteration}',
+                    iteration,
+                    time_taken,
+                    i)
 
 
 if __name__ == "__main__":

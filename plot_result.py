@@ -59,18 +59,25 @@ def file_name(dir, filename):
     return f"{dir}/{filename}"
 
 
-def plotting(file, file_2, plot_method, title_list):
+def plotting_comp(file, file_2, plot_method, title_list):
     with open(file, 'r') as fd:
         with open(file_2, 'r') as fd_2:
             for title in title_list:
                 plot_method(fd, fd_2, title)
 
 
+def bar_plot(data_list, labels):
+    return 1
+
+
 def main():
-    plotting(file_name('grpc_log', 'time_taken_grpc_500_1.csv'),
-             file_name('rpyc_log', 'time_taken_rpyc_500_1.csv'),
-             plot_jux_graph,
-             titles)
+    plotting_comp(file_name('local_test/grpc_log',
+                            'time_taken_grpc_500_1.csv'),
+                  file_name('local_test/rpyc_log',
+                            'time_taken_rpyc_500_1.csv'),
+                  plot_jux_graph,
+                  titles)
+    # bar_plot(get_means(file), titles.map(title=> 'grpc' + title))
     """
     plotting(file_name('result', 'time_taken_grpc_2000.csv'),
              file_name('result', 'time_taken_rpyc_2000.csv'),

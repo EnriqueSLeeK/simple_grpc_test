@@ -15,6 +15,10 @@ class TestService(rpyc.Service):
     def multiToOneReturn(self, data):
         return c.genericObj(data.data_0)
 
+    @rpyc.exposed
+    def shutdown(self):
+        server.close()
+
 
 print('starting server')
 server = ThreadedServer(TestService, port=18811,
