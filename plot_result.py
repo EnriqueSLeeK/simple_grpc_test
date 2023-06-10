@@ -12,6 +12,10 @@ titles = ['empty Send and Return',
 
 titles.extend([f'string_{i} Send and Return' for i in range(10)])
 
+files = [f'time_taken_rpyc__{i}.csv' for i in range(1, 6)]
+files.expand(
+        [f'time_taken_grpc__{i}.csv' for i in range(1, 6)])
+
 
 def get_data(data):
     return [float(time_point)
