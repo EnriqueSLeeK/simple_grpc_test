@@ -1,6 +1,8 @@
 
 echo "Local test"
 
+directory='log/local_log'
+
 echo 'Caso tenha algum processo em python nao execute esse script :p'
 read
 
@@ -19,3 +21,6 @@ cd ../grpc\
     && for i in {0..5}; do python grpc_client.py <<< "500"; done
 
 killall 'python'
+
+mkdir -p $directory
+mv grpc_log rpyc_log $directory

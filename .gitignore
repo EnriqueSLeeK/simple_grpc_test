@@ -2,8 +2,5 @@ __pycache__
 venv
 result
 *.png
-grpc_log
 graph
-rpyc_log
-local_test
-remote_test
+*_log

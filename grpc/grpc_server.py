@@ -46,5 +46,6 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 grpc_service_pb2_grpc.add_serviceTestServicer_to_server(
     serviceTest(), server)
 server.add_insecure_port('[::]:50051')
+print("Start server")
 server.start()
 server.wait_for_termination()

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+directory='log/remote_log'
+
 echo "Remote test"
 
 old_rpyc="conn = rpyc.connect('localhost'"
@@ -37,3 +39,6 @@ python grpc_stop.py
 
 sed -i "$rev_grpc" grpc_client.py
 sed -i "$rev_grpc" grpc_stop.py
+
+mkdir -p $directory
+mv grpc_log rpyc_log $directory
